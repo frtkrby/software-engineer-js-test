@@ -9,6 +9,7 @@ const gulp        = require('gulp'),
       source      = require('vinyl-source-stream'),
       browserify  = require('browserify'),
       sass        = require('gulp-sass'),
+      gulpImage   = require('gulp-image'),
       sourceMaps  = require('gulp-sourcemaps');
 
 const OUTPUT_PATH = "dist/";
@@ -21,10 +22,11 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-gulp.task('dev', ['browserSync', 'html', 'scripts', 'styles'], () => {
+gulp.task('dev', ['browserSync', 'html', 'scripts', 'styles', 'images'], () => {
     //a list of watchers, so it will watch all of the following files waiting for changes
     gulp.watch('app/js/**', ['scripts']);
     gulp.watch('app/css/**', ['styles']);
+    gulp.watch('app/images/**', ['images']);
     gulp.watch('app/*.html', ['html']);
 });
 
@@ -85,7 +87,18 @@ gulp.task('styles', () => {
 
 gulp.task('scripts', ['browserify', 'js']);
 
-gulp.task('js', () => {
+gulp.task('images', function () {
+    gulp.src('./app/images/*')
+      .pipe(gulpImage())
+      .pipe(gulp.dest('./dist/app/images'));
+  });
+
+  gulp.task('fonts', function() {
+    return gulp.src('node_modules/font-awesome/fonts/*')
+      .pipe(gulp.dest('dist/app/fonts'))
+  })
+  
+/*gulp.task('js', () => {
     return bundler.bundle()
         .on('error', function( e ) {
             logError( e );
@@ -95,7 +108,20 @@ gulp.task('js', () => {
         .pipe(gulp.dest(OUTPUT_PATH))
                 //notify browserSync to refresh
         .pipe(browserSync.reload({stream: true}));
-});
+});*/
+/*
+gulp.task('json', function() {
+    return gulp.src('app/uploaded.json')
+      .pipe(gulp.dest('dist/app'))
+  })
+*/
+gulp.task('js', function() {
+    return gulp.src('app/js/*')
+      .pipe(gulp.dest('dist/app/js'))
+      .pipe(browserSync.reload({stream: true}))
+  })
+
+
 
 gulp.task('browserify', function () {
     bundler = browserify({

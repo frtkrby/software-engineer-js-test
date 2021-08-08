@@ -1,34 +1,97 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Albumprinter test application</title>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1"/>
-        <link rel="stylesheet" href="./app/css/styles.css" media="all" />
-    </head>
-    <body>
-        <h1>Test application</h1>
-        <p>
-            Your application is ready. There should be a message in your browsers
-            console indicating the JavaScript application has loaded.
-        </p>
-        <form action="#">
-            <fieldset>
-                <label for="fileSelector">Select an Image file</label>
-                <input type="file" id="fileSelector" />
-            </fieldset>
-        </form>
-        <div class="column left">
-            <div id="imageContainer">
-                <!-- will hold photos -->
+
+<head>
+    <title>Albelli - AlbumPrinter</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1" />
+    <link rel="shortcut icon" href="./app/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./app/css/styles.css" media="all" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+    <nav id="edit-tools">
+        <ul>
+          <li><div>Grayscale <input class="range-editor" id="grayscale" name="grayscale" type="range" min="0" max="100" value="0" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-filled/50/000000/grayscale.png"/></span></li>
+          <li><div>Blur <input class="range-editor" id="blur" name="blur" type="range" min="0" max="10" value="0" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-glyphs/30/000000/blur.png"/></span></li>
+          <li><div>Exposure <input class="range-editor" id="exposure" name="exposure" type="range" min="0" max="200" value="100" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-glyphs/30/000000/exposure-value.png"/></span></li>
+          <li><div>Contrast <input class="range-editor" id="contrast" name="contrast" type="range" min="0" max="200" value="100" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-glyphs/30/000000/contrast.png"/></span></li>
+          <li><div>Hue Rotate <input class="range-editor" id="hue" name="hue" type="range" min="0" max="360" value="0" onchange="editTools()"></div><span><img src="https://img.icons8.com/fluency/48/000000/rgb-circle-3.png"/></span></li>
+          <li><div>Opacity <input class="range-editor" id="opacity" name="opacity" type="range" min="0" max="100" value="100" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-filled/50/000000/opacity.png"/></span></li>
+          <li><div>Invert <input class="range-editor" id="invert" name="invert" type="range" min="0" max="100" value="0" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-glyphs/30/000000/invert-colors.png"/></span></li>
+          <li><div>Saturate <input class="range-editor" id="saturate" name="saturate" type="range" min="0" max="500" value="100" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-glyphs/30/000000/saturation.png"/></span></li>
+          <li><div>Rotate <input class="range-editor" id="rotate" name="rotate" type="range" min="0" max="360" value="0" onchange="editTools()"></div><span><img src="https://img.icons8.com/ios-glyphs/30/000000/3d-rotate.png"/></span></li>
+        </ul>
+    </nav>
+    <div class="container full-height-grow">
+        <header class="main-header">
+            <a href="#" class="brand-logo">
+                <img src="./app/images/logo.png" />
+            </a>
+        </header>
+        <!-- hero -->
+        <section class="main-section">
+            
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                ...
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
-            <button id="generateButton">Generate!</button>
-        </div>
-        <div class="column right">
-            <div id="debugContainer">
-                <!-- will hold debug messages -->
             </div>
         </div>
-        <script type="text/javascript" src="./app/js/main.js"></script>
-    </body>
+            <div class="call-to-action">
+                <form action="#">
+                    <div id="select-image-buttons">
+                        <label for="fileSelector" class="btn btn-primary">Select an Image file</label>
+                        <input type="file" id="fileSelector" name="image_uploads" accept=".jpg, .jpeg, .png">
+                        <input type="button" class="btn btn-success" id="fileSelectorGallery" name="image_uploads_gallery" value="Select From Gallery">
+                        <input type="button" class="btn btn-danger" id="removeGallery" name="remove_gallery" value="Remove Gallery">
+                    </div>
+                </form>
+            </div>
+            <div class="call-to-action">
+                <div class="editing-region" id="editing-region">
+                    <div class="overlay">
+                        <div class="overlay-inner">
+                        </div>
+                    </div>
+                    <img class="album-image" src="">
+                </div>
+            </div>
+            <div id="gallery">
+                <div class="row" id="gallery-item">
+                    
+                </div>
+            </div>
+            <div id="image-actions">
+                <button class="btn btn-danger image-remove"><i class="fa fa-trash"></i> Remove</button>
+                <button class="btn btn-warning image-reset"><i class="fa fa-refresh"></i> Reset</button>
+                <!--<button class="btn btn-info image-crop"><i class="fa fa-crop"></i> Crop</button>-->
+                <button class="btn btn-success save-image"><i class="fa fa-save"></i> Generate</button>
+            </div>
+        </section>
+    </div>
+    <script type="text/javascript" src="./app/js/main.js"></script>
+    <script type="text/javascript" src="./app/js/operations.js"></script>
+    <script type="text/javascript" src="./app/js/tools.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+</body>
+
 </html>
