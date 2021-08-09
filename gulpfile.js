@@ -22,7 +22,7 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-gulp.task('dev', ['browserSync', 'html', 'scripts', 'styles', 'images'], () => {
+gulp.task('dev', ['browserSync', 'html', 'scripts', 'styles', 'images', 'fonts'], () => {
     //a list of watchers, so it will watch all of the following files waiting for changes
     gulp.watch('app/js/**', ['scripts']);
     gulp.watch('app/css/**', ['styles']);
